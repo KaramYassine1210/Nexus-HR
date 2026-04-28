@@ -1,4 +1,4 @@
-# 🏢 HRFlow — Gestion des Ressources Humaines
+# 🏢 Nexus HR— Gestion des Ressources Humaines
 
 Une application RH moderne et multi-rôles pour gérer les demandes administratives, les congés, les absences et les documents employés.
 
