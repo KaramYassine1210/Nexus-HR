@@ -16,18 +16,18 @@ const State = {
 
   // Demo data
   DEMO_USERS: [
-    { id: 'U001', email: 'alice@hrflow.io',   password: 'demo', role: 'employee', name: 'Alice Martin',    dept: 'Engineering',   avatar: 'AM', color: '#6366f1', joinDate: '2022-03-15', manager: 'Bob Dupont' },
-    { id: 'U002', email: 'bob@hrflow.io',     password: 'demo', role: 'manager',  name: 'Bob Dupont',      dept: 'Engineering',   avatar: 'BD', color: '#10b981', joinDate: '2020-01-10', manager: 'Claire Blanc' },
-    { id: 'U003', email: 'claire@hrflow.io',  password: 'demo', role: 'hr',       name: 'Claire Blanc',    dept: 'Human Resources', avatar: 'CB', color: '#f59e0b', joinDate: '2019-06-01', manager: '—' },
-    { id: 'U004', email: 'david@hrflow.io',   password: 'demo', role: 'employee', name: 'David Chen',      dept: 'Design',        avatar: 'DC', color: '#3b82f6', joinDate: '2023-01-20', manager: 'Bob Dupont' },
-    { id: 'U005', email: 'emma@hrflow.io',    password: 'demo', role: 'employee', name: 'Emma Wilson',     dept: 'Marketing',     avatar: 'EW', color: '#8b5cf6', joinDate: '2021-09-05', manager: 'Bob Dupont' },
-    { id: 'U006', email: 'frank@hrflow.io',   password: 'demo', role: 'manager',  name: 'Frank Leroy',     dept: 'Marketing',     avatar: 'FL', color: '#06b6d4', joinDate: '2020-07-12', manager: 'Claire Blanc' },
+    { id: 'U001', email: 'alice@hrflow.io',   password: 'demo', role: 'employee', name: 'Alice Martin',    dept: 'Engineering',   avatar: 'AM', color: '#6366f1', joinDate: '2022-03-15', manager: 'Bob Dupont', telephone: '06 12 34 56 78', adresse: '12 rue des Lilas, 75010 Paris', situation: 'Mariée', rib: 'FR1420041010050500013M02606' },
+    { id: 'U002', email: 'bob@hrflow.io',     password: 'demo', role: 'manager',  name: 'Bob Dupont',      dept: 'Engineering',   avatar: 'BD', color: '#10b981', joinDate: '2020-01-10', manager: 'Claire Blanc', telephone: '07 23 45 67 89', adresse: '45 avenue Victor Hugo, 69000 Lyon', situation: 'Célibataire', rib: 'FR1410038000700123456A78' },
+    { id: 'U003', email: 'claire@hrflow.io',  password: 'demo', role: 'hr',       name: 'Claire Blanc',    dept: 'Human Resources', avatar: 'CB', color: '#f59e0b', joinDate: '2019-06-01', manager: '—', telephone: '06 78 90 12 34', adresse: '78 rue Saint-Antoine, 75012 Paris', situation: 'Pacsée', rib: 'FR1421568000410123456789' },
+    { id: 'U004', email: 'david@hrflow.io',   password: 'demo', role: 'employee', name: 'David Chen',      dept: 'Design',        avatar: 'DC', color: '#3b82f6', joinDate: '2023-01-20', manager: 'Bob Dupont', telephone: '06 45 67 89 01', adresse: '23 boulevard Montmartre, 75009 Paris', situation: 'Marié', rib: 'FR1418068001300123456789' },
+    { id: 'U005', email: 'emma@hrflow.io',    password: 'demo', role: 'employee', name: 'Emma Wilson',     dept: 'Marketing',     avatar: 'EW', color: '#8b5cf6', joinDate: '2021-09-05', manager: 'Bob Dupont', telephone: '07 56 78 90 12', adresse: '56 rue de Rivoli, 75004 Paris', situation: 'Célibataire', rib: 'FR1430003000600123456789' },
+    { id: 'U006', email: 'frank@hrflow.io',   password: 'demo', role: 'manager',  name: 'Frank Leroy',     dept: 'Marketing',     avatar: 'FL', color: '#06b6d4', joinDate: '2020-07-12', manager: 'Claire Blanc', telephone: '06 67 89 01 23', adresse: '89 rue La Fayette, 75010 Paris', situation: 'Divorcé', rib: 'FR1310500015000123456789' },
   ],
 
   WEBHOOKS: {
     leave_request:      'https://webhook.site/hr-leave-request',
     absence_justif:     'https://webhook.site/hr-absence',
-    personal_change:    'https://webhook.site/hr-personal-change',
+    personal_change:    'https://fusion-ai-api.medifus.dev/webhooks/webhook-lueej7jjmyecvf7ek69zf90c/personal_change',
     document_request:   'https://webhook.site/hr-document',
     approve_request:    'https://webhook.site/hr-approve',
     reject_request:     'https://webhook.site/hr-reject',
@@ -487,6 +487,14 @@ function roleLabel(role) {
   return { employee: 'Employé', manager: 'Manager', hr: 'RH Admin' }[role] || role;
 }
 
+function maskRIB(rib) {
+  if (!rib || rib.length < 4) return rib;
+  const lastFour = rib.slice(-4);
+  const masked = '*'.repeat(rib.length - 4) + lastFour;
+  // Format avec espaces tous les 4 caractères
+  return masked.replace(/(.{4})/g, '$1 ').trim();
+}
+
 function navigateTo(pageId) {
   State.currentPage = pageId;
 
@@ -862,39 +870,36 @@ function renderPersonalForm(container) {
           <div class="card-title">✏️ Changement d'informations personnelles</div>
           <div class="card-subtitle">Demandez une mise à jour de vos données RH</div>
         </div>
-        <span class="badge badge-info">Webhook: hr-personal-change</span>
+        <span class="badge badge-info">Webhook: personal_change</span>
       </div>
       <div class="card-body">
         <div class="form-grid">
           <div class="form-group col-2">
             <label class="form-label">Champ à modifier *</label>
-            <select class="form-select" id="pers-field" onchange="updatePersonalPlaceholder()">
-              <option value="adresse">Adresse postale</option>
-              <option value="telephone">Numéro de téléphone</option>
-              <option value="email_perso">Email personnel</option>
-              <option value="iban">IBAN bancaire</option>
-              <option value="contact_urgence">Contact d'urgence</option>
-              <option value="situation_familiale">Situation familiale</option>
-              <option value="autre">Autre</option>
+            <select class="form-select" id="pers-field">
+              <option value="Adresse">Adresse</option>
+              <option value="Téléphone">Téléphone</option>
+              <option value="Situation">Situation</option>
+              <option value="RIB">RIB</option>
             </select>
           </div>
           <div class="form-group col-2">
             <label class="form-label">Ancienne valeur</label>
-            <input type="text" class="form-input" id="pers-old" placeholder="Valeur actuelle à modifier..." />
+            <input type="text" class="form-input" id="pers-old" placeholder="Valeur actuelle..." />
           </div>
           <div class="form-group col-2">
             <label class="form-label">Nouvelle valeur *</label>
             <input type="text" class="form-input" id="pers-new" placeholder="Nouvelle valeur..." />
           </div>
           <div class="form-group col-2">
-            <label class="form-label">Justification de la modification</label>
-            <textarea class="form-textarea" id="pers-reason" placeholder="Expliquez pourquoi vous souhaitez modifier cette information..."></textarea>
+            <label class="form-label">Motif</label>
+            <textarea class="form-textarea" id="pers-reason" placeholder="Décrivez le motif de votre demande..."></textarea>
           </div>
         </div>
         <div class="form-actions">
           <button class="btn btn-outline" onclick="resetForm()">Annuler</button>
           <button class="btn btn-primary" onclick="submitPersonalForm()">
-            📤 Soumettre la modification
+            📤 Envoyer la demande
           </button>
         </div>
       </div>
@@ -1064,7 +1069,7 @@ function submitPersonalForm() {
   State.requests.unshift(newReq);
 
   Webhook.sendRequest('personal_change', data)
-    .then(() => showToast('Demande de modification soumise !', 'success'));
+    .then(() => showToast('Demande envoyée', 'success'));
 
   setTimeout(() => navigateTo('emp-status'), 1200);
 }
@@ -1185,6 +1190,32 @@ function renderEmpProfile(container) {
                 <span style="font-size:0.8rem;font-weight:600">${val}</span>
               </div>
             `).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📋 Informations personnelles</div>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;gap:0.75rem">
+            ${[
+              ['☎️', 'Téléphone', user.telephone],
+              ['📍', 'Adresse', user.adresse],
+              ['💑', 'Situation', user.situation],
+              ['💳', 'RIB', maskRIB(user.rib)],
+            ].map(([icon, label, val]) => `
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border-light)">
+                <div style="display:flex;flex-direction:column;gap:0.25rem;flex:1">
+                  <span style="font-size:0.75rem;color:var(--text-secondary);font-weight:500">${icon} ${label}</span>
+                  <span style="font-size:0.9rem;font-weight:600;color:var(--text-primary)">${val}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="margin-top:1rem;padding:0.75rem;background:var(--info-light);border-radius:var(--radius-sm);border-left:4px solid var(--info)">
+            <span style="font-size:0.8rem;color:var(--info)">💡 Les informations affichées ici peuvent être modifiées via la section "Changement d'informations personnelles" du formulaire de demande.</span>
           </div>
         </div>
       </div>
