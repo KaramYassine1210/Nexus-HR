@@ -25,8 +25,8 @@ const State = {
   ],
 
   WEBHOOKS: {
-    leave_request:      'https://webhook.site/hr-leave-request',
-    absence_justif:     'https://webhook.site/hr-absence',
+    leave_request:      'https://fusion-ai-api.medifus.dev/webhooks/webhook-bmduvk665ioqww9qgvo4mknq/conge',
+    absence_justif:     'https://fusion-ai-api.medifus.dev/webhooks/webhook-abs-webhook-01/absence',
     document_request:   'https://fusion-ai-api.medifus.dev/webhooks/webhook-j1udcxmmpsvlog248ke8ut9z/documents',
     personal_change:    'https://fusion-ai-api.medifus.dev/webhooks/webhook-lueej7jjmyecvf7ek69zf90c/personal_change',
     approve_request:    'https://webhook.site/hr-approve',
@@ -889,7 +889,11 @@ function renderPersonalForm(container) {
           </div>
           <div class="form-group col-2">
             <label class="form-label">Ancienne valeur</label>
+<<<<<<< HEAD
+            <input type="text" class="form-input" id="pers-old" placeholder="Valeur actuelle à modifier..." />
+=======
             <input type="text" class="form-input" id="pers-old" placeholder="Valeur actuelle..." />
+>>>>>>> 0c4bb3d0af0008c08ee59b28e113e1e8018c8c68
           </div>
           <div class="form-group col-2">
             <label class="form-label">Nouvelle valeur *</label>
@@ -1138,7 +1142,6 @@ function submitDocumentWithFile(data) {
     comments: [],
     color: State.currentUser.color
   };
-
   State.requests.unshift(newReq);
 
   Webhook.sendRequest('document_request', data)
@@ -1239,6 +1242,8 @@ function renderEmpProfile(container) {
 
       <div class="card">
         <div class="card-header">
+<<<<<<< HEAD
+=======
           <div class="card-title">📋 Informations personnelles</div>
         </div>
         <div class="card-body">
@@ -1265,6 +1270,7 @@ function renderEmpProfile(container) {
 
       <div class="card">
         <div class="card-header">
+>>>>>>> 0c4bb3d0af0008c08ee59b28e113e1e8018c8c68
           <div class="card-title">Statistiques personnelles</div>
         </div>
         <div class="chart-container" style="height:220px">
