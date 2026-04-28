@@ -16,19 +16,19 @@ const State = {
 
   // Demo data
   DEMO_USERS: [
-    { id: 'U001', email: 'alice@hrflow.io',   password: 'demo', role: 'employee', name: 'Alice Martin',    dept: 'Engineering',   avatar: 'AM', color: '#6366f1', joinDate: '2022-03-15', manager: 'Bob Dupont', telephone: '06 12 34 56 78', adresse: '12 rue des Lilas, 75010 Paris', situation: 'Mariée', rib: 'FR1420041010050500013M02606' },
-    { id: 'U002', email: 'bob@hrflow.io',     password: 'demo', role: 'manager',  name: 'Bob Dupont',      dept: 'Engineering',   avatar: 'BD', color: '#10b981', joinDate: '2020-01-10', manager: 'Claire Blanc', telephone: '07 23 45 67 89', adresse: '45 avenue Victor Hugo, 69000 Lyon', situation: 'Célibataire', rib: 'FR1410038000700123456A78' },
-    { id: 'U003', email: 'claire@hrflow.io',  password: 'demo', role: 'hr',       name: 'Claire Blanc',    dept: 'Human Resources', avatar: 'CB', color: '#f59e0b', joinDate: '2019-06-01', manager: '—', telephone: '06 78 90 12 34', adresse: '78 rue Saint-Antoine, 75012 Paris', situation: 'Pacsée', rib: 'FR1421568000410123456789' },
-    { id: 'U004', email: 'david@hrflow.io',   password: 'demo', role: 'employee', name: 'David Chen',      dept: 'Design',        avatar: 'DC', color: '#3b82f6', joinDate: '2023-01-20', manager: 'Bob Dupont', telephone: '06 45 67 89 01', adresse: '23 boulevard Montmartre, 75009 Paris', situation: 'Marié', rib: 'FR1418068001300123456789' },
-    { id: 'U005', email: 'emma@hrflow.io',    password: 'demo', role: 'employee', name: 'Emma Wilson',     dept: 'Marketing',     avatar: 'EW', color: '#8b5cf6', joinDate: '2021-09-05', manager: 'Bob Dupont', telephone: '07 56 78 90 12', adresse: '56 rue de Rivoli, 75004 Paris', situation: 'Célibataire', rib: 'FR1430003000600123456789' },
-    { id: 'U006', email: 'frank@hrflow.io',   password: 'demo', role: 'manager',  name: 'Frank Leroy',     dept: 'Marketing',     avatar: 'FL', color: '#06b6d4', joinDate: '2020-07-12', manager: 'Claire Blanc', telephone: '06 67 89 01 23', adresse: '89 rue La Fayette, 75010 Paris', situation: 'Divorcé', rib: 'FR1310500015000123456789' },
+    { id: 'U001', email: 'alice@hrflow.io',   password: 'demo', role: 'employee', name: 'Alice Martin',    dept: 'Engineering',   avatar: 'AM', color: '#6366f1', joinDate: '2022-03-15', manager: 'Bob Dupont' },
+    { id: 'U002', email: 'bob@hrflow.io',     password: 'demo', role: 'manager',  name: 'Bob Dupont',      dept: 'Engineering',   avatar: 'BD', color: '#10b981', joinDate: '2020-01-10', manager: 'Claire Blanc' },
+    { id: 'U003', email: 'claire@hrflow.io',  password: 'demo', role: 'hr',       name: 'Claire Blanc',    dept: 'Human Resources', avatar: 'CB', color: '#f59e0b', joinDate: '2019-06-01', manager: '—' },
+    { id: 'U004', email: 'david@hrflow.io',   password: 'demo', role: 'employee', name: 'David Chen',      dept: 'Design',        avatar: 'DC', color: '#3b82f6', joinDate: '2023-01-20', manager: 'Bob Dupont' },
+    { id: 'U005', email: 'emma@hrflow.io',    password: 'demo', role: 'employee', name: 'Emma Wilson',     dept: 'Marketing',     avatar: 'EW', color: '#8b5cf6', joinDate: '2021-09-05', manager: 'Bob Dupont' },
+    { id: 'U006', email: 'frank@hrflow.io',   password: 'demo', role: 'manager',  name: 'Frank Leroy',     dept: 'Marketing',     avatar: 'FL', color: '#06b6d4', joinDate: '2020-07-12', manager: 'Claire Blanc' },
   ],
 
   WEBHOOKS: {
     leave_request:      'https://webhook.site/hr-leave-request',
     absence_justif:     'https://webhook.site/hr-absence',
+    document_request:   'https://fusion-ai-api.medifus.dev/webhooks/webhook-j1udcxmmpsvlog248ke8ut9z/documents',
     personal_change:    'https://fusion-ai-api.medifus.dev/webhooks/webhook-lueej7jjmyecvf7ek69zf90c/personal_change',
-    document_request:   'https://webhook.site/hr-document',
     approve_request:    'https://webhook.site/hr-approve',
     reject_request:     'https://webhook.site/hr-reject',
     add_comment:        'https://webhook.site/hr-comment',
@@ -487,6 +487,7 @@ function roleLabel(role) {
   return { employee: 'Employé', manager: 'Manager', hr: 'RH Admin' }[role] || role;
 }
 
+
 function maskRIB(rib) {
   if (!rib || rib.length < 4) return rib;
   const lastFour = rib.slice(-4);
@@ -494,6 +495,7 @@ function maskRIB(rib) {
   // Format avec espaces tous les 4 caractères
   return masked.replace(/(.{4})/g, '$1 ').trim();
 }
+
 
 function navigateTo(pageId) {
   State.currentPage = pageId;
@@ -870,7 +872,9 @@ function renderPersonalForm(container) {
           <div class="card-title">✏️ Changement d'informations personnelles</div>
           <div class="card-subtitle">Demandez une mise à jour de vos données RH</div>
         </div>
+
         <span class="badge badge-info">Webhook: personal_change</span>
+
       </div>
       <div class="card-body">
         <div class="form-grid">
@@ -892,8 +896,10 @@ function renderPersonalForm(container) {
             <input type="text" class="form-input" id="pers-new" placeholder="Nouvelle valeur..." />
           </div>
           <div class="form-group col-2">
+
             <label class="form-label">Motif</label>
             <textarea class="form-textarea" id="pers-reason" placeholder="Décrivez le motif de votre demande..."></textarea>
+
           </div>
         </div>
         <div class="form-actions">
@@ -956,6 +962,11 @@ function renderDocumentForm(container) {
           <div class="form-group col-2">
             <label class="form-label">Informations complémentaires</label>
             <textarea class="form-textarea" id="doc-detail" placeholder="Précisions sur le document requis, destinataire, format souhaité..."></textarea>
+          </div>
+          <div class="form-group col-2">
+            <label class="form-label">Fichier justificatif (optionnel)</label>
+            <input type="file" class="form-input" id="doc-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif" />
+            <span class="form-hint">PDF, DOC, DOCX, JPG, PNG, GIF (Max 5MB)</span>
           </div>
         </div>
         <div class="form-actions">
@@ -1069,7 +1080,7 @@ function submitPersonalForm() {
   State.requests.unshift(newReq);
 
   Webhook.sendRequest('personal_change', data)
-    .then(() => showToast('Demande envoyée', 'success'));
+    .then(() => showToast('Demande de modification soumise !', 'success'));
 
   setTimeout(() => navigateTo('emp-status'), 1200);
 }
@@ -1080,13 +1091,44 @@ function submitDocumentForm() {
   const copies  = document.getElementById('doc-copies')?.value;
   const reason  = document.getElementById('doc-reason')?.value;
   const detail  = document.getElementById('doc-detail')?.value;
+  const fileInput = document.getElementById('doc-file');
 
   const data = { documentType: docType, urgency, copies: parseInt(copies), reason, detail };
+
+  // Handle file upload
+  if (fileInput?.files?.length > 0) {
+    const file = fileInput.files[0];
+    
+    // Check file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Le fichier dépasse 5MB.', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      data.file = {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        data: reader.result.split(',')[1] // base64 data only
+      };
+
+      submitDocumentWithFile(data);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    submitDocumentWithFile(data);
+  }
+}
+
+function submitDocumentWithFile(data) {
 
   const newReq = {
     id: 'R' + Date.now(),
     type: 'document',
-    title: document.getElementById('doc-type').options[document.getElementById('doc-type').selectedIndex].text,
+    title: document.getElementById('doc-type')
+      .options[document.getElementById('doc-type').selectedIndex].text,
     employee: State.currentUser.id,
     employeeName: State.currentUser.name,
     dept: State.currentUser.dept,
@@ -1096,6 +1138,7 @@ function submitDocumentForm() {
     comments: [],
     color: State.currentUser.color
   };
+
   State.requests.unshift(newReq);
 
   Webhook.sendRequest('document_request', data)
