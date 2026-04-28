@@ -25,7 +25,7 @@ const State = {
   ],
 
   WEBHOOKS: {
-    leave_request:      'https://webhook.site/hr-leave-request',
+    leave_request:      'https://fusion-ai-api.medifus.dev/webhooks/webhook-bmduvk665ioqww9qgvo4mknq/conge',
     absence_justif:     'https://fusion-ai-api.medifus.dev/webhooks/webhook-abs-webhook-01/absence',
     document_request:   'https://fusion-ai-api.medifus.dev/webhooks/webhook-j1udcxmmpsvlog248ke8ut9z/documents',
     personal_change:    'https://fusion-ai-api.medifus.dev/webhooks/webhook-lueej7jjmyecvf7ek69zf90c/personal_change',
