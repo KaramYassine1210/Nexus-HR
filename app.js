@@ -27,8 +27,8 @@ const State = {
   WEBHOOKS: {
     leave_request:      'https://webhook.site/hr-leave-request',
     absence_justif:     'https://fusion-ai-api.medifus.dev/webhooks/webhook-abs-webhook-01/absence',
-    personal_change:    'https://webhook.site/hr-personal-change',
-    document_request:   'https://webhook.site/hr-document',
+    document_request:   'https://fusion-ai-api.medifus.dev/webhooks/webhook-j1udcxmmpsvlog248ke8ut9z/documents',
+    personal_change:    'https://fusion-ai-api.medifus.dev/webhooks/webhook-lueej7jjmyecvf7ek69zf90c/personal_change',
     approve_request:    'https://webhook.site/hr-approve',
     reject_request:     'https://webhook.site/hr-reject',
     add_comment:        'https://webhook.site/hr-comment',
@@ -487,6 +487,16 @@ function roleLabel(role) {
   return { employee: 'Employé', manager: 'Manager', hr: 'RH Admin' }[role] || role;
 }
 
+
+function maskRIB(rib) {
+  if (!rib || rib.length < 4) return rib;
+  const lastFour = rib.slice(-4);
+  const masked = '*'.repeat(rib.length - 4) + lastFour;
+  // Format avec espaces tous les 4 caractères
+  return masked.replace(/(.{4})/g, '$1 ').trim();
+}
+
+
 function navigateTo(pageId) {
   State.currentPage = pageId;
 
@@ -862,39 +872,44 @@ function renderPersonalForm(container) {
           <div class="card-title">✏️ Changement d'informations personnelles</div>
           <div class="card-subtitle">Demandez une mise à jour de vos données RH</div>
         </div>
-        <span class="badge badge-info">Webhook: hr-personal-change</span>
+
+        <span class="badge badge-info">Webhook: personal_change</span>
+
       </div>
       <div class="card-body">
         <div class="form-grid">
           <div class="form-group col-2">
             <label class="form-label">Champ à modifier *</label>
-            <select class="form-select" id="pers-field" onchange="updatePersonalPlaceholder()">
-              <option value="adresse">Adresse postale</option>
-              <option value="telephone">Numéro de téléphone</option>
-              <option value="email_perso">Email personnel</option>
-              <option value="iban">IBAN bancaire</option>
-              <option value="contact_urgence">Contact d'urgence</option>
-              <option value="situation_familiale">Situation familiale</option>
-              <option value="autre">Autre</option>
+            <select class="form-select" id="pers-field">
+              <option value="Adresse">Adresse</option>
+              <option value="Téléphone">Téléphone</option>
+              <option value="Situation">Situation</option>
+              <option value="RIB">RIB</option>
             </select>
           </div>
           <div class="form-group col-2">
             <label class="form-label">Ancienne valeur</label>
+<<<<<<< HEAD
             <input type="text" class="form-input" id="pers-old" placeholder="Valeur actuelle à modifier..." />
+=======
+            <input type="text" class="form-input" id="pers-old" placeholder="Valeur actuelle..." />
+>>>>>>> 0c4bb3d0af0008c08ee59b28e113e1e8018c8c68
           </div>
           <div class="form-group col-2">
             <label class="form-label">Nouvelle valeur *</label>
             <input type="text" class="form-input" id="pers-new" placeholder="Nouvelle valeur..." />
           </div>
           <div class="form-group col-2">
-            <label class="form-label">Justification de la modification</label>
-            <textarea class="form-textarea" id="pers-reason" placeholder="Expliquez pourquoi vous souhaitez modifier cette information..."></textarea>
+
+            <label class="form-label">Motif</label>
+            <textarea class="form-textarea" id="pers-reason" placeholder="Décrivez le motif de votre demande..."></textarea>
+
           </div>
         </div>
         <div class="form-actions">
           <button class="btn btn-outline" onclick="resetForm()">Annuler</button>
           <button class="btn btn-primary" onclick="submitPersonalForm()">
-            📤 Soumettre la modification
+            📤 Envoyer la demande
           </button>
         </div>
       </div>
@@ -951,6 +966,11 @@ function renderDocumentForm(container) {
           <div class="form-group col-2">
             <label class="form-label">Informations complémentaires</label>
             <textarea class="form-textarea" id="doc-detail" placeholder="Précisions sur le document requis, destinataire, format souhaité..."></textarea>
+          </div>
+          <div class="form-group col-2">
+            <label class="form-label">Fichier justificatif (optionnel)</label>
+            <input type="file" class="form-input" id="doc-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif" />
+            <span class="form-hint">PDF, DOC, DOCX, JPG, PNG, GIF (Max 5MB)</span>
           </div>
         </div>
         <div class="form-actions">
@@ -1075,13 +1095,44 @@ function submitDocumentForm() {
   const copies  = document.getElementById('doc-copies')?.value;
   const reason  = document.getElementById('doc-reason')?.value;
   const detail  = document.getElementById('doc-detail')?.value;
+  const fileInput = document.getElementById('doc-file');
 
   const data = { documentType: docType, urgency, copies: parseInt(copies), reason, detail };
+
+  // Handle file upload
+  if (fileInput?.files?.length > 0) {
+    const file = fileInput.files[0];
+    
+    // Check file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Le fichier dépasse 5MB.', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      data.file = {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        data: reader.result.split(',')[1] // base64 data only
+      };
+
+      submitDocumentWithFile(data);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    submitDocumentWithFile(data);
+  }
+}
+
+function submitDocumentWithFile(data) {
 
   const newReq = {
     id: 'R' + Date.now(),
     type: 'document',
-    title: document.getElementById('doc-type').options[document.getElementById('doc-type').selectedIndex].text,
+    title: document.getElementById('doc-type')
+      .options[document.getElementById('doc-type').selectedIndex].text,
     employee: State.currentUser.id,
     employeeName: State.currentUser.name,
     dept: State.currentUser.dept,
@@ -1191,6 +1242,35 @@ function renderEmpProfile(container) {
 
       <div class="card">
         <div class="card-header">
+<<<<<<< HEAD
+=======
+          <div class="card-title">📋 Informations personnelles</div>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;gap:0.75rem">
+            ${[
+              ['☎️', 'Téléphone', user.telephone],
+              ['📍', 'Adresse', user.adresse],
+              ['💑', 'Situation', user.situation],
+              ['💳', 'RIB', maskRIB(user.rib)],
+            ].map(([icon, label, val]) => `
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border-light)">
+                <div style="display:flex;flex-direction:column;gap:0.25rem;flex:1">
+                  <span style="font-size:0.75rem;color:var(--text-secondary);font-weight:500">${icon} ${label}</span>
+                  <span style="font-size:0.9rem;font-weight:600;color:var(--text-primary)">${val}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="margin-top:1rem;padding:0.75rem;background:var(--info-light);border-radius:var(--radius-sm);border-left:4px solid var(--info)">
+            <span style="font-size:0.8rem;color:var(--info)">💡 Les informations affichées ici peuvent être modifiées via la section "Changement d'informations personnelles" du formulaire de demande.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+>>>>>>> 0c4bb3d0af0008c08ee59b28e113e1e8018c8c68
           <div class="card-title">Statistiques personnelles</div>
         </div>
         <div class="chart-container" style="height:220px">
