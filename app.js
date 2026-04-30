@@ -1,6 +1,6 @@
 /* ===================================================
-   HRFlow — Application RH Multi-rôles
-   Frontend SPA — Webhook-driven
+   Nexus RH — Application RH Multi-rôles
+   Frontend SPA
    =================================================== */
 
 // ───────────────────────────────────────────────────
@@ -27,8 +27,8 @@ const State = {
   WEBHOOKS: {
     leave_request:      'https://fusion-ai-api.medifus.dev/webhooks/webhook-bmduvk665ioqww9qgvo4mknq/conge',
     absence_justif:     'https://fusion-ai-api.medifus.dev/webhooks/webhook-abs-webhook-01/absence',
-    document_request:   'https://fusion-ai-api.medifus.dev/webhooks/webhook-j1udcxmmpsvlog248ke8ut9z/documents',
     personal_change:    'https://fusion-ai-api.medifus.dev/webhooks/webhook-lueej7jjmyecvf7ek69zf90c/personal_change',
+    document_request:   'https://fusion-ai-api.medifus.dev/webhooks/webhook-j1udcxmmpsvlog248ke8ut9z/documents',
     approve_request:    'https://webhook.site/hr-approve',
     reject_request:     'https://webhook.site/hr-reject',
     add_comment:        'https://webhook.site/hr-comment',
@@ -127,7 +127,7 @@ const Webhook = {
 // TOAST NOTIFICATIONS
 // ───────────────────────────────────────────────────
 function showToast(message, type = 'info', duration = 3500) {
-  const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+  const icons = { success: '', error: '', info: '', warning: '' };
   let container = document.getElementById('toast-container');
   if (!container) {
     container = document.createElement('div');
@@ -185,7 +185,7 @@ function updateWebhookLog() {
       <span class="log-time">[${e.time}]</span>
       <span class="log-method"> POST</span>
       <span class="log-url"> ${e.url.replace('https://webhook.site/', 'wh/')}</span>
-      <span class="log-status"> → ${e.status === 'sent' ? '✓ 200' : e.status === 'error' ? '✗ ERR' : '⏳ ...'}</span>
+      <span class="log-status"> → ${e.status === 'sent' ? '200 OK' : e.status === 'error' ? 'ERR' : '...'}</span>
       <div class="log-data">${JSON.stringify(e.data, null, 2).substring(0, 200)}${JSON.stringify(e.data).length > 200 ? '...' : ''}</div>
     </div>
   `).join('');
@@ -199,9 +199,27 @@ function renderLogin() {
     <div class="login-page">
       <div class="login-left">
         <div class="login-brand">
-          <div class="login-brand-icon">👥</div>
+          <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <defs>
+              <linearGradient id="lb-a" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#818cf8"/>
+                <stop offset="100%" stop-color="#c7d2fe"/>
+              </linearGradient>
+              <filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <line x1="32" y1="14" x2="14" y2="46" stroke="url(#lb-a)" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+            <line x1="32" y1="14" x2="50" y2="46" stroke="url(#lb-a)" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+            <line x1="14" y1="46" x2="50" y2="46" stroke="url(#lb-a)" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+            <circle cx="14" cy="46" r="7" fill="url(#lb-a)" opacity=".9"/>
+            <circle cx="50" cy="46" r="7" fill="url(#lb-a)" opacity=".9"/>
+            <circle cx="32" cy="14" r="10" fill="url(#lb-a)" filter="url(#lb-glow)"/>
+            <circle cx="32" cy="14" r="5" fill="white" opacity=".4"/>
+          </svg>
           <div>
-            <div class="login-brand-name">HRFlow</div>
+            <div class="login-brand-name">Nexus RH</div>
             <div class="login-brand-tag">Gestion RH</div>
           </div>
         </div>
@@ -217,19 +235,19 @@ function renderLogin() {
 
         <div class="login-features">
           <div class="login-feature">
-            <div class="login-feature-icon">🔐</div>
+            <div class="login-feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
             Accès sécurisé multi-rôles
           </div>
           <div class="login-feature">
-            <div class="login-feature-icon">📊</div>
+            <div class="login-feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
             Tableaux de bord en temps réel
           </div>
           <div class="login-feature">
-            <div class="login-feature-icon">🔗</div>
-            Intégration webhooks JSON
+            <div class="login-feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            Automatisation Fusion AI
           </div>
           <div class="login-feature">
-            <div class="login-feature-icon">📝</div>
+            <div class="login-feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             Gestion des demandes et congés
           </div>
         </div>
@@ -237,24 +255,24 @@ function renderLogin() {
 
       <div class="login-right">
         <div class="login-form-container">
-          <div class="login-form-title">Bienvenue 👋</div>
+          <div class="login-form-title">Bienvenue</div>
           <div class="login-form-sub">Connectez-vous à votre espace RH</div>
 
           <div style="margin-bottom:1.25rem">
             <div style="font-size:0.82rem;font-weight:600;color:var(--text-primary);margin-bottom:0.6rem">Sélectionnez votre rôle</div>
             <div class="role-selector">
               <div class="role-option selected" data-role="employee" onclick="selectRole(this, 'employee')">
-                <div class="role-option-icon">👤</div>
+                <div class="role-option-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
                 <div class="role-option-name">Employé</div>
                 <div class="role-option-desc">Mes demandes</div>
               </div>
               <div class="role-option" data-role="manager" onclick="selectRole(this, 'manager')">
-                <div class="role-option-icon">👨‍💼</div>
+                <div class="role-option-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><polyline points="16 11 18 13 22 9"/></svg></div>
                 <div class="role-option-name">Manager</div>
                 <div class="role-option-desc">Mon équipe</div>
               </div>
               <div class="role-option" data-role="hr" onclick="selectRole(this, 'hr')">
-                <div class="role-option-icon">🏢</div>
+                <div class="role-option-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><path d="M8 7V5a2 2 0 0 0-4 0v2"/></svg></div>
                 <div class="role-option-name">RH</div>
                 <div class="role-option-desc">Tout l'org</div>
               </div>
@@ -264,7 +282,7 @@ function renderLogin() {
           <div class="login-input-group">
             <label class="login-input-label">Email professionnel</label>
             <div class="login-input-wrap">
-              <span class="login-input-icon">📧</span>
+              <span class="login-input-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
               <input type="email" id="login-email" class="login-input" placeholder="vous@hrflow.io" />
             </div>
           </div>
@@ -272,7 +290,7 @@ function renderLogin() {
           <div class="login-input-group">
             <label class="login-input-label">Mot de passe</label>
             <div class="login-input-wrap">
-              <span class="login-input-icon">🔒</span>
+              <span class="login-input-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
               <input type="password" id="login-password" class="login-input" placeholder="••••••••" />
             </div>
           </div>
@@ -333,12 +351,13 @@ function quickLogin(email, role) {
   doLogin();
 }
 
-function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
+async function doLogin() {
+  const email    = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value.trim();
-  const role = State._selectedRole;
+  const role     = State._selectedRole;
 
-  const user = State.DEMO_USERS.find(u => u.email === email && u.password === password && u.role === role);
+  const hashed = await DB.hashPassword(password);
+  const user   = State.DEMO_USERS.find(u => u.email === email && u.password === hashed && u.role === role);
 
   if (!user) {
     showToast('Email, mot de passe ou rôle incorrect.', 'error');
@@ -372,9 +391,27 @@ function renderApp() {
     <div class="app-layout">
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
-          <div class="logo-icon">👥</div>
+          <svg width="36" height="36" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <defs>
+              <linearGradient id="sl-a" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#818cf8"/>
+              </linearGradient>
+              <filter id="sl-glow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <line x1="32" y1="14" x2="14" y2="46" stroke="url(#sl-a)" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+            <line x1="32" y1="14" x2="50" y2="46" stroke="url(#sl-a)" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+            <line x1="14" y1="46" x2="50" y2="46" stroke="url(#sl-a)" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+            <circle cx="14" cy="46" r="7" fill="url(#sl-a)" opacity=".9"/>
+            <circle cx="50" cy="46" r="7" fill="url(#sl-a)" opacity=".9"/>
+            <circle cx="32" cy="14" r="10" fill="url(#sl-a)" filter="url(#sl-glow)"/>
+            <circle cx="32" cy="14" r="5" fill="white" opacity=".35"/>
+          </svg>
           <div>
-            <div class="logo-text">HRFlow</div>
+            <div class="logo-text">Nexus RH</div>
             <div class="logo-sub">Gestion RH</div>
           </div>
         </div>
@@ -402,7 +439,7 @@ function renderApp() {
 
         <div class="sidebar-footer">
           <button class="btn-logout" onclick="doLogout()">
-            <span>🚪</span>
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
             <span>Déconnexion</span>
           </button>
         </div>
@@ -417,9 +454,9 @@ function renderApp() {
             </div>
           </div>
           <div class="topbar-right">
-            <div class="topbar-date">📅 ${new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+            <div class="topbar-date">${new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
             <button class="topbar-btn" onclick="openNotifications()" title="Notifications">
-              🔔
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
               <span class="notif-dot"></span>
             </button>
             <button class="topbar-btn" onclick="openProfileModal()" title="Profil">
@@ -444,33 +481,32 @@ function getNavItems(role) {
   if (role === 'employee') {
     return [
       { section: 'Principal' },
-      { id: 'emp-dashboard',  icon: '🏠', label: 'Tableau de bord' },
-      { id: 'emp-forms',      icon: '📝', label: 'Mes demandes',   badge: pendingCount('U001') || '' },
-      { id: 'emp-status',     icon: '📋', label: 'Suivi demandes' },
+      { id: 'emp-dashboard',  icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: 'Tableau de bord' },
+      { id: 'emp-forms',      icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>', label: 'Mes demandes',   badge: pendingCount(State.currentUser.id) || '' },
+      { id: 'emp-status',     icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>', label: 'Suivi demandes' },
+      { id: 'emp-calendar',   icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>', label: 'Calendrier' },
       { section: 'Profil' },
-      { id: 'emp-profile',    icon: '👤', label: 'Mon profil' },
+      { id: 'emp-profile',    icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>', label: 'Mon profil' },
     ];
   } else if (role === 'manager') {
     return [
       { section: 'Principal' },
-      { id: 'mgr-dashboard',  icon: '🏠', label: 'Tableau de bord' },
-      { id: 'mgr-requests',   icon: '📬', label: 'Demandes équipe', badge: pendingCountAll() || '' },
-      { id: 'mgr-team',       icon: '👥', label: 'Mon équipe' },
+      { id: 'mgr-dashboard',  icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: 'Tableau de bord' },
+      { id: 'mgr-requests',   icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>', label: 'Demandes équipe', badge: pendingCountAll() || '' },
+      { id: 'mgr-team',       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', label: 'Mon équipe' },
+      { id: 'mgr-calendar',   icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>', label: 'Calendrier' },
       { section: 'Analytique' },
-      { id: 'mgr-stats',      icon: '📊', label: 'Statistiques' },
-      { section: 'Système' },
-      { id: 'mgr-webhooks',   icon: '🔗', label: 'Logs Webhook' },
+      { id: 'mgr-stats',      icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>', label: 'Statistiques' },
     ];
   } else {
     return [
       { section: 'Principal' },
-      { id: 'hr-dashboard',   icon: '🏠', label: 'Tableau de bord' },
-      { id: 'hr-requests',    icon: '📬', label: 'Toutes demandes', badge: pendingCountAll() || '' },
-      { id: 'hr-employees',   icon: '👥', label: 'Employés' },
+      { id: 'hr-dashboard',   icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: 'Tableau de bord' },
+      { id: 'hr-requests',    icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>', label: 'Toutes demandes', badge: pendingCountAll() || '' },
+      { id: 'hr-employees',   icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', label: 'Employés' },
+      { id: 'hr-calendar',    icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>', label: 'Calendrier' },
       { section: 'Analytique' },
-      { id: 'hr-stats',       icon: '📊', label: 'Statistiques RH' },
-      { section: 'Système' },
-      { id: 'hr-webhooks',    icon: '🔗', label: 'Logs Webhook' },
+      { id: 'hr-stats',       icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>', label: 'Statistiques RH' },
     ];
   }
 }
@@ -487,16 +523,6 @@ function roleLabel(role) {
   return { employee: 'Employé', manager: 'Manager', hr: 'RH Admin' }[role] || role;
 }
 
-
-function maskRIB(rib) {
-  if (!rib || rib.length < 4) return rib;
-  const lastFour = rib.slice(-4);
-  const masked = '*'.repeat(rib.length - 4) + lastFour;
-  // Format avec espaces tous les 4 caractères
-  return masked.replace(/(.{4})/g, '$1 ').trim();
-}
-
-
 function navigateTo(pageId) {
   State.currentPage = pageId;
 
@@ -509,14 +535,17 @@ function navigateTo(pageId) {
     'emp-forms':      ['Nouvelle demande', 'Remplissez et soumettez vos formulaires'],
     'emp-status':     ['Suivi des demandes', 'Consultez l\'état de vos demandes'],
     'emp-profile':    ['Mon profil', 'Informations personnelles et RH'],
+    'emp-calendar':   ['Calendrier', 'Vos congés et absences du mois'],
     'mgr-dashboard':  ['Tableau de bord', 'Vue d\'ensemble de votre équipe'],
     'mgr-requests':   ['Demandes équipe', 'Gérez les demandes de vos collaborateurs'],
     'mgr-team':       ['Mon équipe', 'Gestion des membres de l\'équipe'],
+    'mgr-calendar':   ['Calendrier équipe', 'Aperçu des congés et absences de l\'équipe'],
     'mgr-stats':      ['Statistiques', 'Analyses et indicateurs de performance'],
     'mgr-webhooks':   ['Logs Webhook', 'Historique des événements envoyés'],
     'hr-dashboard':   ['Tableau de bord RH', 'Vue globale de l\'organisation'],
     'hr-requests':    ['Toutes les demandes', 'Gestion centralisée des demandes RH'],
     'hr-employees':   ['Gestion des employés', 'Annuaire et données des collaborateurs'],
+    'hr-calendar':    ['Calendrier RH', 'Vue globale des congés et absences'],
     'hr-stats':       ['Statistiques RH', 'KPIs et analyses organisationnelles'],
     'hr-webhooks':    ['Logs Webhook', 'Historique des événements envoyés'],
   };
@@ -536,13 +565,16 @@ function navigateTo(pageId) {
     'emp-forms':      renderEmpForms,
     'emp-status':     renderEmpStatus,
     'emp-profile':    renderEmpProfile,
+    'emp-calendar':   renderCalendar,
     'mgr-dashboard':  renderMgrDashboard,
     'mgr-requests':   renderMgrRequests,
     'mgr-team':       renderMgrTeam,
+    'mgr-calendar':   renderCalendar,
     'mgr-stats':      renderStats,
     'hr-dashboard':   renderHRDashboard,
     'hr-requests':    renderHRRequests,
     'hr-employees':   renderHREmployees,
+    'hr-calendar':    renderCalendar,
     'hr-stats':       renderStats,
     'mgr-webhooks':   renderWebhookLogs,
     'hr-webhooks':    renderWebhookLogs,
@@ -564,7 +596,7 @@ function renderEmpDashboard(container) {
   container.innerHTML = `
     <div class="section-header">
       <div>
-        <div class="section-title">Bonjour, ${user.name.split(' ')[0]} 👋</div>
+        <div class="section-title">Bonjour, ${user.name.split(' ')[0]}</div>
         <div class="section-sub">Voici un résumé de votre activité RH</div>
       </div>
       <button class="btn btn-primary" onclick="navigateTo('emp-forms')">
@@ -572,10 +604,12 @@ function renderEmpDashboard(container) {
       </button>
     </div>
 
+    ${renderLeaveBalance(user)}
+
     <div class="stats-grid">
       <div class="stat-card indigo">
         <div class="stat-header">
-          <div class="stat-icon indigo">📝</div>
+          <div class="stat-icon indigo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
           <span class="stat-trend trend-flat">Total</span>
         </div>
         <div class="stat-value">${myReqs.length}</div>
@@ -583,7 +617,7 @@ function renderEmpDashboard(container) {
       </div>
       <div class="stat-card amber">
         <div class="stat-header">
-          <div class="stat-icon amber">⏳</div>
+          <div class="stat-icon amber"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
           <span class="stat-trend trend-flat">En cours</span>
         </div>
         <div class="stat-value">${pending}</div>
@@ -591,7 +625,7 @@ function renderEmpDashboard(container) {
       </div>
       <div class="stat-card green">
         <div class="stat-header">
-          <div class="stat-icon green">✅</div>
+          <div class="stat-icon green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
           <span class="stat-trend trend-up">+${approved}</span>
         </div>
         <div class="stat-value">${approved}</div>
@@ -599,7 +633,7 @@ function renderEmpDashboard(container) {
       </div>
       <div class="stat-card red">
         <div class="stat-header">
-          <div class="stat-icon red">❌</div>
+          <div class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
           <span class="stat-trend trend-down">${rejected}</span>
         </div>
         <div class="stat-value">${rejected}</div>
@@ -617,7 +651,7 @@ function renderEmpDashboard(container) {
           <span class="card-action" onclick="navigateTo('emp-status')">Voir tout →</span>
         </div>
         <div class="request-list">
-          ${myReqs.length === 0 ? '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">Aucune demande</div></div>' :
+          ${myReqs.length === 0 ? '<div class="empty-state"><div class="empty-icon"></div><div class="empty-title">Aucune demande</div></div>' :
           myReqs.slice(0, 5).map(r => `
             <div class="request-item" onclick="showRequestDetail('${r.id}')">
               <div class="request-avatar" style="background:${r.color}">${r.employeeName.split(' ').map(w => w[0]).join('')}</div>
@@ -677,10 +711,10 @@ function renderEmpDashboard(container) {
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;padding:1.5rem">
         ${[
-          { icon: '🏖️', label: 'Demande de congé',    tab: 'leave',    color: '#6366f1' },
-          { icon: '🏥', label: 'Justif. d\'absence',   tab: 'absence',  color: '#3b82f6' },
-          { icon: '📄', label: 'Document admin.',      tab: 'document', color: '#10b981' },
-          { icon: '✏️', label: 'Infos personnelles',   tab: 'personal', color: '#f59e0b' },
+          { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>', label: 'Demande de congé',    tab: 'leave',    color: '#6366f1' },
+          { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>', label: 'Justif. d\'absence',   tab: 'absence',  color: '#3b82f6' },
+          { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>', label: 'Document admin.',      tab: 'document', color: '#10b981' },
+          { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>', label: 'Infos personnelles',   tab: 'personal', color: '#f59e0b' },
         ].map(a => `
           <div onclick="navigateTo('emp-forms');setTimeout(()=>setFormTab('${a.tab}'),100)"
                style="display:flex;align-items:center;gap:0.75rem;padding:1rem;border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all 0.2s"
@@ -708,10 +742,10 @@ function renderEmpForms(container) {
     </div>
 
     <div class="forms-tabs" id="forms-tabs">
-      <div class="form-tab active" data-tab="leave"    onclick="setFormTab('leave')">🏖️ Congé</div>
-      <div class="form-tab"        data-tab="absence"  onclick="setFormTab('absence')">🏥 Absence</div>
-      <div class="form-tab"        data-tab="personal" onclick="setFormTab('personal')">✏️ Infos perso.</div>
-      <div class="form-tab"        data-tab="document" onclick="setFormTab('document')">📄 Document</div>
+      <div class="form-tab active" data-tab="leave"     onclick="setFormTab('leave')">Congé</div>
+      <div class="form-tab"        data-tab="absence"   onclick="setFormTab('absence')">Absence</div>
+      <div class="form-tab"        data-tab="personal"  onclick="setFormTab('personal')">Infos perso.</div>
+      <div class="form-tab"        data-tab="document"  onclick="setFormTab('document')">Document</div>
     </div>
 
     <div id="form-content"></div>
@@ -743,10 +777,9 @@ function renderLeaveForm(container) {
     <div class="card">
       <div class="card-header">
         <div>
-          <div class="card-title">🏖️ Demande de congé</div>
+          <div class="card-title">Demande de congé</div>
           <div class="card-subtitle">Remplissez les informations relatives à votre demande de congé</div>
         </div>
-        <span class="badge badge-info">Webhook: hr-leave-request</span>
       </div>
       <div class="card-body">
         <div class="form-grid">
@@ -789,7 +822,7 @@ function renderLeaveForm(container) {
         <div class="form-actions">
           <button class="btn btn-outline" onclick="resetForm()">Annuler</button>
           <button class="btn btn-primary" onclick="submitLeaveForm()">
-            📤 Envoyer la demande
+            Envoyer la demande
           </button>
         </div>
       </div>
@@ -808,10 +841,9 @@ function renderAbsenceForm(container) {
     <div class="card">
       <div class="card-header">
         <div>
-          <div class="card-title">🏥 Justificatif d'absence</div>
+          <div class="card-title">Justificatif d'absence</div>
           <div class="card-subtitle">Justifiez une absence passée ou à venir</div>
         </div>
-        <span class="badge badge-info">Webhook: hr-absence</span>
       </div>
       <div class="card-body">
         <div class="form-grid">
@@ -854,7 +886,7 @@ function renderAbsenceForm(container) {
         <div class="form-actions">
           <button class="btn btn-outline" onclick="resetForm()">Annuler</button>
           <button class="btn btn-primary" onclick="submitAbsenceForm()">
-            📤 Envoyer le justificatif
+            Envoyer le justificatif
           </button>
         </div>
       </div>
@@ -869,47 +901,41 @@ function renderPersonalForm(container) {
     <div class="card">
       <div class="card-header">
         <div>
-          <div class="card-title">✏️ Changement d'informations personnelles</div>
+          <div class="card-title">Changement d'informations personnelles</div>
           <div class="card-subtitle">Demandez une mise à jour de vos données RH</div>
         </div>
-
-        <span class="badge badge-info">Webhook: personal_change</span>
-
       </div>
       <div class="card-body">
         <div class="form-grid">
           <div class="form-group col-2">
             <label class="form-label">Champ à modifier *</label>
-            <select class="form-select" id="pers-field">
-              <option value="Adresse">Adresse</option>
-              <option value="Téléphone">Téléphone</option>
-              <option value="Situation">Situation</option>
-              <option value="RIB">RIB</option>
+            <select class="form-select" id="pers-field" onchange="updatePersonalPlaceholder()">
+              <option value="adresse">Adresse postale</option>
+              <option value="telephone">Numéro de téléphone</option>
+              <option value="email_perso">Email personnel</option>
+              <option value="iban">IBAN bancaire</option>
+              <option value="contact_urgence">Contact d'urgence</option>
+              <option value="situation_familiale">Situation familiale</option>
+              <option value="autre">Autre</option>
             </select>
           </div>
           <div class="form-group col-2">
             <label class="form-label">Ancienne valeur</label>
-<<<<<<< HEAD
             <input type="text" class="form-input" id="pers-old" placeholder="Valeur actuelle à modifier..." />
-=======
-            <input type="text" class="form-input" id="pers-old" placeholder="Valeur actuelle..." />
->>>>>>> 0c4bb3d0af0008c08ee59b28e113e1e8018c8c68
           </div>
           <div class="form-group col-2">
             <label class="form-label">Nouvelle valeur *</label>
             <input type="text" class="form-input" id="pers-new" placeholder="Nouvelle valeur..." />
           </div>
           <div class="form-group col-2">
-
-            <label class="form-label">Motif</label>
-            <textarea class="form-textarea" id="pers-reason" placeholder="Décrivez le motif de votre demande..."></textarea>
-
+            <label class="form-label">Justification de la modification</label>
+            <textarea class="form-textarea" id="pers-reason" placeholder="Expliquez pourquoi vous souhaitez modifier cette information..."></textarea>
           </div>
         </div>
         <div class="form-actions">
           <button class="btn btn-outline" onclick="resetForm()">Annuler</button>
           <button class="btn btn-primary" onclick="submitPersonalForm()">
-            📤 Envoyer la demande
+            Soumettre la modification
           </button>
         </div>
       </div>
@@ -922,10 +948,9 @@ function renderDocumentForm(container) {
     <div class="card">
       <div class="card-header">
         <div>
-          <div class="card-title">📄 Demande de document administratif</div>
+          <div class="card-title">Demande de document administratif</div>
           <div class="card-subtitle">Demandez un document officiel auprès du service RH</div>
         </div>
-        <span class="badge badge-info">Webhook: hr-document</span>
       </div>
       <div class="card-body">
         <div class="form-grid">
@@ -967,16 +992,11 @@ function renderDocumentForm(container) {
             <label class="form-label">Informations complémentaires</label>
             <textarea class="form-textarea" id="doc-detail" placeholder="Précisions sur le document requis, destinataire, format souhaité..."></textarea>
           </div>
-          <div class="form-group col-2">
-            <label class="form-label">Fichier justificatif (optionnel)</label>
-            <input type="file" class="form-input" id="doc-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif" />
-            <span class="form-hint">PDF, DOC, DOCX, JPG, PNG, GIF (Max 5MB)</span>
-          </div>
         </div>
         <div class="form-actions">
           <button class="btn btn-outline" onclick="resetForm()">Annuler</button>
           <button class="btn btn-primary" onclick="submitDocumentForm()">
-            📤 Demander le document
+            Demander le document
           </button>
         </div>
       </div>
@@ -1018,9 +1038,10 @@ function submitLeaveForm() {
     color: State.currentUser.color
   };
   State.requests.unshift(newReq);
+  DB.insertRequest(newReq);
 
   Webhook.sendRequest('leave_request', data)
-    .then(() => showToast('Demande de congé envoyée avec succès ! 🎉', 'success'));
+    .then(() => showToast('Demande de congé envoyée avec succès', 'success'));
 
   setFormTab('leave');
   setTimeout(() => navigateTo('emp-status'), 1200);
@@ -1051,6 +1072,7 @@ function submitAbsenceForm() {
     color: State.currentUser.color
   };
   State.requests.unshift(newReq);
+  DB.insertRequest(newReq);
 
   Webhook.sendRequest('absence_justif', data)
     .then(() => showToast('Justificatif soumis avec succès !', 'success'));
@@ -1082,6 +1104,7 @@ function submitPersonalForm() {
     color: State.currentUser.color
   };
   State.requests.unshift(newReq);
+  DB.insertRequest(newReq);
 
   Webhook.sendRequest('personal_change', data)
     .then(() => showToast('Demande de modification soumise !', 'success'));
@@ -1095,44 +1118,13 @@ function submitDocumentForm() {
   const copies  = document.getElementById('doc-copies')?.value;
   const reason  = document.getElementById('doc-reason')?.value;
   const detail  = document.getElementById('doc-detail')?.value;
-  const fileInput = document.getElementById('doc-file');
 
   const data = { documentType: docType, urgency, copies: parseInt(copies), reason, detail };
-
-  // Handle file upload
-  if (fileInput?.files?.length > 0) {
-    const file = fileInput.files[0];
-    
-    // Check file size (5MB max)
-    if (file.size > 5 * 1024 * 1024) {
-      showToast('Le fichier dépasse 5MB.', 'error');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      data.file = {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        data: reader.result.split(',')[1] // base64 data only
-      };
-
-      submitDocumentWithFile(data);
-    };
-    reader.readAsDataURL(file);
-  } else {
-    submitDocumentWithFile(data);
-  }
-}
-
-function submitDocumentWithFile(data) {
 
   const newReq = {
     id: 'R' + Date.now(),
     type: 'document',
-    title: document.getElementById('doc-type')
-      .options[document.getElementById('doc-type').selectedIndex].text,
+    title: document.getElementById('doc-type').options[document.getElementById('doc-type').selectedIndex].text,
     employee: State.currentUser.id,
     employeeName: State.currentUser.name,
     dept: State.currentUser.dept,
@@ -1143,6 +1135,7 @@ function submitDocumentWithFile(data) {
     color: State.currentUser.color
   };
   State.requests.unshift(newReq);
+  DB.insertRequest(newReq);
 
   Webhook.sendRequest('document_request', data)
     .then(() => showToast('Demande de document envoyée !', 'success'));
@@ -1169,7 +1162,7 @@ function renderEmpStatus(container) {
     <div class="card">
       ${myReqs.length === 0 ? `
         <div class="empty-state">
-          <div class="empty-icon">📭</div>
+          <div class="empty-icon"></div>
           <div class="empty-title">Aucune demande</div>
           <div class="empty-desc">Vous n'avez pas encore soumis de demande.</div>
           <button class="btn btn-primary" style="margin-top:1rem" onclick="navigateTo('emp-forms')">Créer une demande</button>
@@ -1190,7 +1183,7 @@ function renderEmpStatus(container) {
               </div>
               ${r.comments.length > 0 ? `
                 <div style="margin-top:0.65rem;padding:0.65rem;background:var(--bg);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-secondary)">
-                  💬 <strong>${r.comments[r.comments.length-1].author}</strong>: ${r.comments[r.comments.length-1].text}
+                  <strong>${r.comments[r.comments.length-1].author}</strong>: ${r.comments[r.comments.length-1].text}
                 </div>
               ` : ''}
             </div>
@@ -1226,10 +1219,10 @@ function renderEmpProfile(container) {
 
           <div style="display:grid;gap:0.75rem">
             ${[
-              ['🏢', 'Département', user.dept],
-              ['👨‍💼', 'Manager', user.manager],
-              ['📅', 'Date d\'entrée', formatDate(user.joinDate)],
-              ['🆔', 'Identifiant', user.id],
+              ['', 'Département', user.dept],
+              ['', 'Manager', user.manager],
+              ['', 'Date d\'entrée', formatDate(user.joinDate)],
+              ['', 'Identifiant', user.id],
             ].map(([icon, label, val]) => `
               <div style="display:flex;justify-content:space-between;padding:0.65rem;background:var(--bg);border-radius:var(--radius-sm)">
                 <span style="font-size:0.8rem;color:var(--text-secondary)">${icon} ${label}</span>
@@ -1242,35 +1235,6 @@ function renderEmpProfile(container) {
 
       <div class="card">
         <div class="card-header">
-<<<<<<< HEAD
-=======
-          <div class="card-title">📋 Informations personnelles</div>
-        </div>
-        <div class="card-body">
-          <div style="display:grid;gap:0.75rem">
-            ${[
-              ['☎️', 'Téléphone', user.telephone],
-              ['📍', 'Adresse', user.adresse],
-              ['💑', 'Situation', user.situation],
-              ['💳', 'RIB', maskRIB(user.rib)],
-            ].map(([icon, label, val]) => `
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border-light)">
-                <div style="display:flex;flex-direction:column;gap:0.25rem;flex:1">
-                  <span style="font-size:0.75rem;color:var(--text-secondary);font-weight:500">${icon} ${label}</span>
-                  <span style="font-size:0.9rem;font-weight:600;color:var(--text-primary)">${val}</span>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-          <div style="margin-top:1rem;padding:0.75rem;background:var(--info-light);border-radius:var(--radius-sm);border-left:4px solid var(--info)">
-            <span style="font-size:0.8rem;color:var(--info)">💡 Les informations affichées ici peuvent être modifiées via la section "Changement d'informations personnelles" du formulaire de demande.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
->>>>>>> 0c4bb3d0af0008c08ee59b28e113e1e8018c8c68
           <div class="card-title">Statistiques personnelles</div>
         </div>
         <div class="chart-container" style="height:220px">
@@ -1327,22 +1291,22 @@ function renderMgrDashboard(container) {
 
     <div class="stats-grid">
       <div class="stat-card blue">
-        <div class="stat-header"><div class="stat-icon blue">👥</div><span class="stat-trend trend-flat">Actifs</span></div>
+        <div class="stat-header"><div class="stat-icon blue"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="stat-trend trend-flat">Actifs</span></div>
         <div class="stat-value">4</div>
         <div class="stat-label">Membres dans l'équipe</div>
       </div>
       <div class="stat-card amber">
-        <div class="stat-header"><div class="stat-icon amber">⏳</div><span class="stat-trend trend-flat">À traiter</span></div>
+        <div class="stat-header"><div class="stat-icon amber"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="stat-trend trend-flat">À traiter</span></div>
         <div class="stat-value">${pending}</div>
         <div class="stat-label">Demandes en attente</div>
       </div>
       <div class="stat-card green">
-        <div class="stat-header"><div class="stat-icon green">✅</div><span class="stat-trend trend-up">+${approved}</span></div>
+        <div class="stat-header"><div class="stat-icon green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="stat-trend trend-up">+${approved}</span></div>
         <div class="stat-value">${approved}</div>
         <div class="stat-label">Demandes approuvées</div>
       </div>
       <div class="stat-card red">
-        <div class="stat-header"><div class="stat-icon red">❌</div><span class="stat-trend trend-down">${rejected}</span></div>
+        <div class="stat-header"><div class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span class="stat-trend trend-down">${rejected}</span></div>
         <div class="stat-value">${rejected}</div>
         <div class="stat-label">Demandes refusées</div>
       </div>
@@ -1369,11 +1333,11 @@ function renderMgrDashboard(container) {
                 <div class="action-btns">
                   <button class="btn-icon approve" onclick="actionRequest('approve','${r.id}')" title="Approuver">✓</button>
                   <button class="btn-icon reject"  onclick="actionRequest('reject','${r.id}')"  title="Refuser">✗</button>
-                  <button class="btn-icon view"    onclick="showRequestDetail('${r.id}')"       title="Voir détails">👁</button>
+                  <button class="btn-icon view"    onclick="showRequestDetail('${r.id}')"       title="Voir détails"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
               </div>
             </div>
-          `).join('') || '<div class="empty-state" style="padding:2rem"><div class="empty-icon">🎉</div><div class="empty-title">Aucune demande en attente</div></div>'}
+          `).join('') || '<div class="empty-state" style="padding:2rem"><div class="empty-icon"></div><div class="empty-title">Aucune demande en attente</div></div>'}
         </div>
       </div>
 
@@ -1437,7 +1401,7 @@ function renderRequestsTable(container, role) {
     <div class="card">
       <div class="filter-bar">
         <div class="search-input-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
           <input type="text" class="search-input" id="req-search" placeholder="Rechercher un employé, une demande..." oninput="filterRequests()" />
         </div>
         <select class="filter-select" id="req-status-filter" onchange="filterRequests()">
@@ -1502,7 +1466,7 @@ function renderRequestsRows(requests) {
       <td><span style="font-size:1rem">${typeIcon(r.type)}</span> ${typeLabel(r.type)}</td>
       <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.title}</td>
       <td>${r.dept}</td>
-      <td style="color:var(--text-secondary)">${formatDate(r.date)}</td>
+      <td style="color:var(--text-secondary)">${formatDate(r.date)}${r.status==='pending' ? ' ' + getSLABadge(r.date) : ''}</td>
       <td><span class="badge badge-${r.status}">${statusIcon(r.status)} ${statusLabel(r.status)}</span></td>
       <td>
         <div class="action-btns">
@@ -1510,8 +1474,8 @@ function renderRequestsRows(requests) {
             <button class="btn-icon approve" onclick="actionRequest('approve','${r.id}')" title="Approuver">✓</button>
             <button class="btn-icon reject"  onclick="actionRequest('reject','${r.id}')"  title="Refuser">✗</button>
           ` : ''}
-          <button class="btn-icon comment" onclick="openCommentModal('${r.id}')" title="Commenter">💬</button>
-          <button class="btn-icon view"    onclick="showRequestDetail('${r.id}')"  title="Détails">👁</button>
+          <button class="btn-icon comment" onclick="openCommentModal('${r.id}')" title="Commenter"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+          <button class="btn-icon view"    onclick="showRequestDetail('${r.id}')"  title="Détails"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
       </td>
     </tr>
@@ -1565,8 +1529,9 @@ function actionRequest(action, requestId) {
   }
 
   req.status = 'approved';
+  DB.updateRequestStatus(requestId, 'approved');
   Webhook.sendAction('approve', requestId)
-    .then(() => showToast(`Demande de ${req.employeeName} approuvée ✅`, 'success'));
+    .then(() => showToast(`Demande de ${req.employeeName} approuvée`, 'success'));
 
   refreshRequestsView();
   updateNavBadges();
@@ -1580,12 +1545,15 @@ function confirmReject(requestId) {
   if (!req) return;
 
   req.status = 'rejected';
-  req.comments.push({
+  const rejectComment = {
     author: State.currentUser.name,
     role: roleLabel(State.currentUser.role),
     text: reason,
     date: new Date().toISOString().split('T')[0]
-  });
+  };
+  req.comments.push(rejectComment);
+  DB.updateRequestStatus(requestId, 'rejected');
+  DB.insertComment(requestId, rejectComment);
 
   Webhook.sendAction('reject', requestId, { reason })
     .then(() => showToast(`Demande de ${req.employeeName} refusée.`, 'warning'));
@@ -1639,12 +1607,14 @@ function submitComment(requestId) {
   const req = State.requests.find(r => r.id === requestId);
   if (!req) return;
 
-  req.comments.push({
+  const newComment = {
     author: State.currentUser.name,
     role: roleLabel(State.currentUser.role),
     text,
     date: new Date().toISOString().split('T')[0]
-  });
+  };
+  req.comments.push(newComment);
+  DB.insertComment(requestId, newComment);
 
   Webhook.sendComment(requestId, text)
     .then(() => showToast('Commentaire envoyé !', 'success'));
@@ -1703,7 +1673,7 @@ function showRequestDetail(requestId) {
       <div style="display:flex;gap:0.75rem;margin-top:1.25rem">
         <button class="btn btn-success" style="flex:1" onclick="closeModal();actionRequest('approve','${req.id}')">✓ Approuver</button>
         <button class="btn btn-danger"  style="flex:1" onclick="closeModal();actionRequest('reject','${req.id}')">✗ Refuser</button>
-        <button class="btn btn-outline" onclick="closeModal();openCommentModal('${req.id}')">💬 Commenter</button>
+        <button class="btn btn-outline" onclick="closeModal();openCommentModal('${req.id}')">Commenter</button>
       </div>
     ` : ''}
   `, 'modal-lg');
@@ -1787,33 +1757,33 @@ function renderHRDashboard(container) {
         <div class="section-sub">Vue globale de l'organisation — Avril 2026</div>
       </div>
       <button class="btn btn-primary" onclick="navigateTo('hr-requests')">
-        📬 Gérer les demandes
+        Gérer les demandes
       </button>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card blue">
-        <div class="stat-header"><div class="stat-icon blue">👥</div><span class="stat-trend trend-up">+2 ce mois</span></div>
+        <div class="stat-header"><div class="stat-icon blue"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="stat-trend trend-up">+2 ce mois</span></div>
         <div class="stat-value">${State.DEMO_USERS.length}</div>
         <div class="stat-label">Employés actifs</div>
       </div>
       <div class="stat-card amber">
-        <div class="stat-header"><div class="stat-icon amber">⏳</div><span class="stat-trend trend-flat">${Math.round(pending/totalReq*100)}%</span></div>
+        <div class="stat-header"><div class="stat-icon amber"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="stat-trend trend-flat">${Math.round(pending/totalReq*100)}%</span></div>
         <div class="stat-value">${pending}</div>
         <div class="stat-label">Demandes en attente</div>
       </div>
       <div class="stat-card green">
-        <div class="stat-header"><div class="stat-icon green">✅</div><span class="stat-trend trend-up">${Math.round(approved/totalReq*100)}%</span></div>
+        <div class="stat-header"><div class="stat-icon green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="stat-trend trend-up">${Math.round(approved/totalReq*100)}%</span></div>
         <div class="stat-value">${approved}</div>
         <div class="stat-label">Demandes approuvées</div>
       </div>
       <div class="stat-card red">
-        <div class="stat-header"><div class="stat-icon red">❌</div><span class="stat-trend trend-down">${Math.round(rejected/totalReq*100)}%</span></div>
+        <div class="stat-header"><div class="stat-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span class="stat-trend trend-down">${Math.round(rejected/totalReq*100)}%</span></div>
         <div class="stat-value">${rejected}</div>
         <div class="stat-label">Demandes refusées</div>
       </div>
       <div class="stat-card indigo">
-        <div class="stat-header"><div class="stat-icon indigo">📝</div><span class="stat-trend trend-up">+3 ce mois</span></div>
+        <div class="stat-header"><div class="stat-icon indigo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="stat-trend trend-up">+3 ce mois</span></div>
         <div class="stat-value">${totalReq}</div>
         <div class="stat-label">Total demandes</div>
       </div>
@@ -1864,7 +1834,7 @@ function renderHRDashboard(container) {
                 </div>
               </div>
             </div>
-          `).join('') || '<div class="empty-state" style="padding:2rem"><div class="empty-icon">🎉</div><div class="empty-title">Aucune demande urgente</div></div>'}
+          `).join('') || '<div class="empty-state" style="padding:2rem"><div class="empty-icon"></div><div class="empty-title">Aucune demande urgente</div></div>'}
         </div>
       </div>
 
@@ -1947,7 +1917,7 @@ function renderHREmployees(container) {
     <div class="card">
       <div class="filter-bar">
         <div class="search-input-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
           <input type="text" class="search-input" placeholder="Rechercher un employé..." />
         </div>
         <select class="filter-select">
@@ -2037,12 +2007,12 @@ function renderStats(container) {
 
     <div class="stats-grid">
       <div class="stat-card indigo">
-        <div class="stat-header"><div class="stat-icon indigo">📊</div><span class="stat-trend trend-up">+12%</span></div>
+        <div class="stat-header"><div class="stat-icon indigo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><span class="stat-trend trend-up">+12%</span></div>
         <div class="stat-value">${total}</div>
         <div class="stat-label">Demandes totales</div>
       </div>
       <div class="stat-card green">
-        <div class="stat-header"><div class="stat-icon green">📈</div><span class="stat-trend trend-up">${total ? Math.round(approved/total*100) : 0}%</span></div>
+        <div class="stat-header"><div class="stat-icon green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><span class="stat-trend trend-up">${total ? Math.round(approved/total*100) : 0}%</span></div>
         <div class="stat-value">${total ? Math.round(approved/total*100) : 0}%</div>
         <div class="stat-label">Taux d'approbation</div>
       </div>
@@ -2052,7 +2022,7 @@ function renderStats(container) {
         <div class="stat-label">Délai moyen traitement</div>
       </div>
       <div class="stat-card blue">
-        <div class="stat-header"><div class="stat-icon blue">📅</div><span class="stat-trend trend-up">+3</span></div>
+        <div class="stat-header"><div class="stat-icon blue"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><span class="stat-trend trend-up">+3</span></div>
         <div class="stat-value">8</div>
         <div class="stat-label">Demandes ce mois</div>
       </div>
@@ -2201,23 +2171,7 @@ function renderWebhookLogs(container) {
         <div class="section-title">Logs Webhook</div>
         <div class="section-sub">Historique des événements JSON envoyés vers les webhooks</div>
       </div>
-      <button class="btn btn-outline" onclick="clearWebhookLogs()">🗑 Vider les logs</button>
-    </div>
-
-    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
-      ${Object.entries(State.WEBHOOKS).map(([key, url]) => `
-        <div class="stat-card blue" style="cursor:default">
-          <div style="font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.35rem">
-            ${key.replace(/_/g, ' ')}
-          </div>
-          <div style="font-size:0.78rem;color:var(--primary);word-break:break-all">
-            ${url.replace('https://webhook.site/', 'wh.site/')}
-          </div>
-          <div style="margin-top:0.5rem">
-            <span class="webhook-status sent"><span class="webhook-status-dot"></span>Configuré</span>
-          </div>
-        </div>
-      `).join('')}
+      <button class="btn btn-outline" onclick="clearWebhookLogs()">Vider les logs</button>
     </div>
 
     <div class="card">
@@ -2228,7 +2182,7 @@ function renderWebhookLogs(container) {
       <div style="padding:1.25rem">
         ${State.webhookLogs.length === 0 ? `
           <div class="empty-state">
-            <div class="empty-icon">📡</div>
+            <div class="empty-icon"></div>
             <div class="empty-title">Aucun webhook envoyé</div>
             <div class="empty-desc">Les événements apparaîtront ici après vos actions.</div>
           </div>
@@ -2282,31 +2236,28 @@ function openProfileModal() {
       <span class="badge badge-info" style="margin-top:0.5rem">${roleLabel(u.role)}</span>
     </div>
     <div style="display:grid;gap:0.5rem">
-      ${[['🏢','Département',u.dept],['👨‍💼','Manager',u.manager],['📅','Entrée',formatDate(u.joinDate)]].map(([i,l,v])=>`
+      ${[['','Département',u.dept],['','Manager',u.manager],['','Entrée',formatDate(u.joinDate)]].map(([i,l,v])=>`
         <div style="display:flex;justify-content:space-between;padding:0.6rem 0.875rem;background:var(--bg);border-radius:var(--radius-sm)">
           <span style="font-size:0.82rem;color:var(--text-secondary)">${i} ${l}</span>
           <span style="font-size:0.82rem;font-weight:600">${v}</span>
         </div>
       `).join('')}
     </div>
-    <button class="btn btn-danger btn-full" style="margin-top:1.25rem" onclick="closeModal();doLogout()">🚪 Déconnexion</button>
+    <button class="btn btn-danger btn-full" style="margin-top:1.25rem" onclick="closeModal();doLogout()">Déconnexion</button>
   `);
 }
 
 function openNotifications() {
-  const notifications = [
-    { icon: '📬', text: 'Nouvelle demande de congé reçue', time: 'Il y a 5 min', unread: true },
-    { icon: '✅', text: 'Demande de David Chen approuvée', time: 'Il y a 1h', unread: true },
-    { icon: '💬', text: 'Commentaire ajouté par Bob Dupont', time: 'Il y a 2h', unread: false },
-    { icon: '📄', text: 'Document administratif prêt', time: 'Il y a 3h', unread: false },
-  ];
+  const notifications = getNotifications();
 
   openModal(`
     <div class="modal-header">
       <div class="modal-title">Notifications</div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    ${notifications.map(n => `
+    ${notifications.length === 0
+      ? '<div style="text-align:center;padding:2rem;color:var(--text-muted)">Aucune notification</div>'
+      : notifications.map(n => `
       <div style="display:flex;gap:0.875rem;padding:0.875rem;border-radius:var(--radius-sm);background:${n.unread?'var(--primary-light)':'var(--bg)'};margin-bottom:0.5rem">
         <span style="font-size:1.25rem">${n.icon}</span>
         <div>
@@ -2320,14 +2271,309 @@ function openNotifications() {
 }
 
 // ───────────────────────────────────────────────────
+// SOLDE DE CONGÉS
+// ───────────────────────────────────────────────────
+function calcLeaveBalance(user) {
+  const joinDate = new Date(user.joinDate);
+  const today = new Date();
+  const monthsWorked = (today.getFullYear() - joinDate.getFullYear()) * 12 + (today.getMonth() - joinDate.getMonth());
+  const yearsWorked = monthsWorked / 12;
+
+  let ratePerMonth = 1.5;
+  if (yearsWorked >= 10) ratePerMonth = 1.8;
+  else if (yearsWorked >= 5) ratePerMonth = 1.75;
+
+  const totalEarned = Math.floor(monthsWorked * ratePerMonth);
+  const usedDays = State.requests
+    .filter(r => r.employee === user.id && r.type === 'leave' && r.status === 'approved' && r.details?.days)
+    .reduce((sum, r) => sum + (r.details.days || 0), 0);
+  const pendingDays = State.requests
+    .filter(r => r.employee === user.id && r.type === 'leave' && r.status === 'pending' && r.details?.days)
+    .reduce((sum, r) => sum + (r.details.days || 0), 0);
+  const remaining = Math.max(0, totalEarned - usedDays);
+  const rttTotal = 10;
+  const rttUsed = State.requests
+    .filter(r => r.employee === user.id && r.type === 'leave' && r.status === 'approved' && r.details?.type === 'rtt' && r.details?.days)
+    .reduce((sum, r) => sum + (r.details.days || 0), 0);
+
+  return { totalEarned, usedDays, pendingDays, remaining, rttTotal, rttUsed, rttRemaining: Math.max(0, rttTotal - rttUsed), yearsWorked: yearsWorked.toFixed(1) };
+}
+
+function renderLeaveBalance(user) {
+  const b = calcLeaveBalance(user);
+  const pct = b.totalEarned > 0 ? Math.round((b.usedDays / b.totalEarned) * 100) : 0;
+  const rttPct = Math.round((b.rttUsed / b.rttTotal) * 100);
+  return `
+    <div class="card" style="margin-bottom:1.25rem">
+      <div class="card-header">
+        <div class="card-title">Solde de congés</div>
+        <span style="font-size:0.75rem;color:var(--text-muted)">${b.yearsWorked} ans d'ancienneté</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;padding:1.25rem">
+        <div style="background:var(--bg);border-radius:var(--radius);padding:1rem;border:1.5px solid var(--border)">
+          <div style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:0.5rem">Congés annuels</div>
+          <div style="font-size:2rem;font-weight:800;color:var(--primary)">${b.remaining}j</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem">sur ${b.totalEarned}j acquis · ${b.usedDays}j pris</div>
+          <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:var(--primary);border-radius:3px;transition:width 0.5s"></div>
+          </div>
+          ${b.pendingDays > 0 ? `<div style="font-size:0.72rem;color:var(--warning);margin-top:4px">${b.pendingDays}j en attente</div>` : ''}
+        </div>
+        <div style="background:var(--bg);border-radius:var(--radius);padding:1rem;border:1.5px solid var(--border)">
+          <div style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:0.5rem">RTT</div>
+          <div style="font-size:2rem;font-weight:800;color:#10b981">${b.rttRemaining}j</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem">sur ${b.rttTotal}j · ${b.rttUsed}j pris</div>
+          <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+            <div style="height:100%;width:${rttPct}%;background:#10b981;border-radius:3px;transition:width 0.5s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ───────────────────────────────────────────────────
+// FORMULAIRE TÉLÉTRAVAIL
+// ───────────────────────────────────────────────────
+function renderTeleworkForm(container) {
+  const today = new Date().toISOString().split('T')[0];
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Demande de télétravail</div>
+          <div class="card-subtitle">Soumettez votre demande de travail à distance</div>
+        </div>
+        <span class="badge badge-info">Webhook: hr-leave-request</span>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Type de télétravail *</label>
+            <select class="form-select" id="tw-type">
+              <option value="occasionnel">Occasionnel (ponctel)</option>
+              <option value="regulier">Régulier (récurrent)</option>
+              <option value="exceptionnel">Exceptionnel (urgence)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fréquence *</label>
+            <select class="form-select" id="tw-freq">
+              <option value="1j_semaine">1 jour / semaine</option>
+              <option value="2j_semaine">2 jours / semaine</option>
+              <option value="ponctuel">Ponctuel</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date de début *</label>
+            <input type="date" class="form-input" id="tw-from" value="${today}" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date de fin *</label>
+            <input type="date" class="form-input" id="tw-to" value="${today}" />
+          </div>
+          <div class="form-group col-2">
+            <label class="form-label">Lieu de travail *</label>
+            <input type="text" class="form-input" id="tw-location" placeholder="Ex : Domicile, espace de coworking..." />
+          </div>
+          <div class="form-group col-2">
+            <label class="form-label">Tâches prévues *</label>
+            <textarea class="form-textarea" id="tw-tasks" placeholder="Décrivez les tâches que vous allez accomplir en télétravail..."></textarea>
+          </div>
+          <div class="form-group col-2">
+            <label class="form-label">Matériel disponible</label>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.25rem">
+              ${['Ordinateur portable','Connexion internet stable','VPN configuré','Téléphone professionnel'].map(m => `
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;cursor:pointer">
+                  <input type="checkbox" value="${m}" id="tw-mat-${m.replace(/\s/g,'-')}" checked /> ${m}
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-outline" onclick="resetForm()">Annuler</button>
+          <button class="btn btn-primary" onclick="submitTeleworkForm()">
+            Soumettre la demande
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function submitTeleworkForm() {
+  const from     = document.getElementById('tw-from')?.value;
+  const to       = document.getElementById('tw-to')?.value;
+  const type     = document.getElementById('tw-type')?.value;
+  const freq     = document.getElementById('tw-freq')?.value;
+  const location = document.getElementById('tw-location')?.value;
+  const tasks    = document.getElementById('tw-tasks')?.value;
+
+  if (!from || !to || !location || !tasks) { showToast('Veuillez remplir tous les champs obligatoires.', 'error'); return; }
+  if (new Date(to) < new Date(from)) { showToast('La date de fin doit être après la date de début.', 'error'); return; }
+
+  const days = Math.ceil((new Date(to) - new Date(from)) / 86400000) + 1;
+  const data = { type: 'telework_' + type, from, to, days, freq, location, tasks, reason: 'Télétravail - ' + type };
+
+  const newReq = {
+    id: 'R' + Date.now(),
+    type: 'telework',
+    title: 'Télétravail ' + (type === 'occasionnel' ? 'occasionnel' : type === 'regulier' ? 'régulier' : 'exceptionnel'),
+    employee: State.currentUser.id,
+    employeeName: State.currentUser.name,
+    dept: State.currentUser.dept,
+    date: new Date().toISOString().split('T')[0],
+    status: 'pending',
+    details: data,
+    comments: [],
+    color: '#06b6d4'
+  };
+  State.requests.unshift(newReq);
+  DB.insertRequest(newReq);
+
+  Webhook.sendRequest('leave_request', data)
+    .then(() => showToast('Demande de télétravail envoyée', 'success'));
+
+  setTimeout(() => navigateTo('emp-status'), 1200);
+}
+
+// ───────────────────────────────────────────────────
+// COMPTEUR SLA
+// ───────────────────────────────────────────────────
+function getSLAHours(dateStr) {
+  const submitted = new Date(dateStr);
+  const now = new Date();
+  return Math.floor((now - submitted) / 3600000);
+}
+
+function getSLABadge(dateStr) {
+  const hours = getSLAHours(dateStr);
+  if (hours < 24)  return `<span style="font-size:0.7rem;padding:2px 7px;border-radius:20px;background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.3)">${hours}h</span>`;
+  if (hours < 48)  return `<span style="font-size:0.7rem;padding:2px 7px;border-radius:20px;background:rgba(245,158,11,0.12);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)">${hours}h</span>`;
+  return `<span style="font-size:0.7rem;padding:2px 7px;border-radius:20px;background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.3)">${hours}h — Dépassé</span>`;
+}
+
+// ───────────────────────────────────────────────────
+// CALENDRIER DES ABSENCES
+// ───────────────────────────────────────────────────
+function renderCalendar(container) {
+  const today = new Date();
+  const year  = today.getFullYear();
+  const month = today.getMonth();
+  const monthName = today.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const offset = firstDay === 0 ? 6 : firstDay - 1;
+
+  const approvedLeaves = State.requests.filter(r =>
+    (r.type === 'leave' || r.type === 'telework') &&
+    r.status === 'approved' && r.details?.from && r.details?.to
+  );
+
+  function getDayInfo(day) {
+    const d = new Date(year, month, day);
+    const dStr = d.toISOString().split('T')[0];
+    const events = approvedLeaves.filter(r => {
+      const from = new Date(r.details.from);
+      const to   = new Date(r.details.to);
+      return d >= from && d <= to;
+    });
+    return events;
+  }
+
+  const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  let cells = '';
+  for (let i = 0; i < offset; i++) cells += `<div class="cal-cell empty"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const events = getDayInfo(d);
+    const isToday = d === today.getDate();
+    const isWeekend = ((d + offset - 1) % 7) >= 5;
+    cells += `
+      <div class="cal-cell${isToday ? ' cal-today' : ''}${isWeekend ? ' cal-weekend' : ''}${events.length ? ' cal-has-event' : ''}">
+        <div class="cal-day-num">${d}</div>
+        ${events.slice(0,2).map(e => `
+          <div class="cal-event" style="background:${e.color || '#6366f1'}20;color:${e.color || '#6366f1'};border-left:2px solid ${e.color || '#6366f1'}">
+            ${e.employeeName.split(' ')[0]}
+          </div>
+        `).join('')}
+        ${events.length > 2 ? `<div style="font-size:0.6rem;color:var(--text-muted)">+${events.length-2}</div>` : ''}
+      </div>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Calendrier des absences</div>
+          <div class="card-subtitle" style="text-transform:capitalize">${monthName}</div>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center;font-size:0.75rem">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:50%;background:#6366f1;display:inline-block"></span>Congé</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:50%;background:#06b6d4;display:inline-block"></span>Télétravail</span>
+        </div>
+      </div>
+      <div style="padding:1rem">
+        <div class="cal-grid-header">
+          ${days.map(d => `<div class="cal-header-cell">${d}</div>`).join('')}
+        </div>
+        <div class="cal-grid">${cells}</div>
+      </div>
+      <div style="padding:0 1rem 1rem">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);margin-bottom:0.5rem">Absences ce mois</div>
+        ${approvedLeaves.length === 0 ? '<div style="font-size:0.82rem;color:var(--text-muted)">Aucune absence approuvée ce mois.</div>' :
+        approvedLeaves.slice(0,5).map(r => `
+          <div style="display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid var(--border);font-size:0.8rem">
+            <div style="width:8px;height:8px;border-radius:50%;background:${r.color || '#6366f1'};flex-shrink:0"></div>
+            <span style="font-weight:600">${r.employeeName}</span>
+            <span style="color:var(--text-muted)">${typeLabel(r.type)}</span>
+            <span style="margin-left:auto;color:var(--text-muted)">${formatDate(r.details?.from)} → ${formatDate(r.details?.to)}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ───────────────────────────────────────────────────
+// NOTIFICATIONS IN-APP (dynamiques)
+// ───────────────────────────────────────────────────
+function getNotifications() {
+  const user = State.currentUser;
+  const notifs = [];
+
+  if (user.role === 'employee') {
+    State.requests.filter(r => r.employee === user.id).forEach(r => {
+      if (r.status === 'approved') notifs.push({ icon: '', text: `Votre demande "${r.title}" a été approuvée`, time: formatDate(r.date), unread: true, type: 'success' });
+      if (r.status === 'rejected') notifs.push({ icon: '', text: `Votre demande "${r.title}" a été refusée`, time: formatDate(r.date), unread: true, type: 'error' });
+      r.comments.forEach(c => notifs.push({ icon: '', text: `${c.author} a commenté votre demande "${r.title}"`, time: c.date, unread: false, type: 'info' }));
+    });
+    const b = calcLeaveBalance(user);
+    if (b.remaining < 5) notifs.push({ icon: '', text: `Il vous reste seulement ${b.remaining} jour(s) de congé annuel`, time: 'Aujourd\'hui', unread: true, type: 'warning' });
+  }
+
+  if (user.role === 'manager' || user.role === 'hr') {
+    const pending = State.requests.filter(r => r.status === 'pending');
+    pending.forEach(r => {
+      const hours = getSLAHours(r.date);
+      if (hours > 48) notifs.push({ icon: '', text: `SLA dépassé : "${r.title}" de ${r.employeeName} (${hours}h)`, time: formatDate(r.date), unread: true, type: 'error' });
+      else notifs.push({ icon: '', text: `Demande en attente : "${r.title}" de ${r.employeeName}`, time: formatDate(r.date), unread: hours < 24, type: 'info' });
+    });
+  }
+
+  return notifs.slice(0, 8);
+}
+
+// ───────────────────────────────────────────────────
 // HELPERS
 // ───────────────────────────────────────────────────
 function typeLabel(type) {
-  return { leave: 'Congé', absence: 'Absence', personal: 'Info perso.', document: 'Document' }[type] || type;
+  return { leave: 'Congé', absence: 'Absence', personal: 'Info perso.', document: 'Document', telework: 'Télétravail' }[type] || type;
 }
 
 function typeIcon(type) {
-  return { leave: '🏖️', absence: '🏥', personal: '✏️', document: '📄' }[type] || '📝';
+  return '';
 }
 
 function statusLabel(status) {
@@ -2335,7 +2581,7 @@ function statusLabel(status) {
 }
 
 function statusIcon(status) {
-  return { pending: '⏳', approved: '✅', rejected: '❌' }[status] || '';
+  return '';
 }
 
 function formatDate(dateStr) {
@@ -2348,16 +2594,39 @@ function formatDate(dateStr) {
 }
 
 // ───────────────────────────────────────────────────
+// REALTIME PAGE REFRESH
+// ───────────────────────────────────────────────────
+function refreshCurrentPage() {
+  if (!State.currentPage || !document.getElementById('page-content')) return;
+  navigateTo(State.currentPage);
+}
+
+// ───────────────────────────────────────────────────
 // INIT
 // ───────────────────────────────────────────────────
-function init() {
+async function init() {
+  document.getElementById('app').innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#94a3b8;font-size:0.9rem;gap:0.75rem">' +
+    '<svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="li" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#818cf8"/></linearGradient></defs><line x1="32" y1="14" x2="14" y2="46" stroke="url(#li)" stroke-width="2.5" stroke-linecap="round"/><line x1="32" y1="14" x2="50" y2="46" stroke="url(#li)" stroke-width="2.5" stroke-linecap="round"/><line x1="14" y1="46" x2="50" y2="46" stroke="url(#li)" stroke-width="2.5" stroke-linecap="round"/><circle cx="32" cy="14" r="10" fill="url(#li)"/></svg>' +
+    'Chargement…</div>';
+
+  try {
+    const [users, requests] = await Promise.all([DB.loadUsers(), DB.loadRequests()]);
+    if (users)    State.DEMO_USERS = users;
+    if (requests) State.requests   = requests;
+    DB.subscribeRealtime(refreshCurrentPage);
+  } catch (e) {
+    console.warn('[NexusRH] DB init failed, using demo data:', e);
+  }
+
   const saved = sessionStorage.getItem('hrflow_user');
   if (saved) {
     try {
-      State.currentUser = JSON.parse(saved);
+      const savedUser   = JSON.parse(saved);
+      State.currentUser = State.DEMO_USERS.find(u => u.id === savedUser.id) || savedUser;
       renderApp();
       return;
-    } catch(e) {}
+    } catch (e) {}
   }
   renderLogin();
 }
@@ -2370,10 +2639,12 @@ window.quickLogin        = quickLogin;
 window.navigateTo        = navigateTo;
 window.setFormTab        = setFormTab;
 window.resetForm         = resetForm;
-window.submitLeaveForm   = submitLeaveForm;
-window.submitAbsenceForm = submitAbsenceForm;
-window.submitPersonalForm= submitPersonalForm;
-window.submitDocumentForm= submitDocumentForm;
+window.submitLeaveForm    = submitLeaveForm;
+window.submitAbsenceForm  = submitAbsenceForm;
+window.submitPersonalForm = submitPersonalForm;
+window.submitDocumentForm = submitDocumentForm;
+window.submitTeleworkForm = submitTeleworkForm;
+window.renderCalendar     = renderCalendar;
 window.actionRequest     = actionRequest;
 window.confirmReject     = confirmReject;
 window.openCommentModal  = openCommentModal;
@@ -2382,7 +2653,8 @@ window.showRequestDetail = showRequestDetail;
 window.filterRequests    = filterRequests;
 window.openProfileModal  = openProfileModal;
 window.openNotifications = openNotifications;
-window.clearWebhookLogs  = clearWebhookLogs;
-window.closeModal        = closeModal;
+window.clearWebhookLogs   = clearWebhookLogs;
+window.closeModal         = closeModal;
+window.refreshCurrentPage = refreshCurrentPage;
 
 document.addEventListener('DOMContentLoaded', init);
